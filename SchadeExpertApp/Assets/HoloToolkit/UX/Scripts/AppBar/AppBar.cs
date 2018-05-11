@@ -174,6 +174,10 @@ namespace HoloToolkit.Unity.UX
         [SerializeField]
         private BoundingBox boundingBox;
 
+        [SerializeField]
+        public GameObject marker;
+
+
         private ButtonTemplate[] defaultButtons;
         private Vector3[] forwards = new Vector3[4];
         private Vector3 targetBarSize = Vector3.one;
@@ -220,6 +224,9 @@ namespace HoloToolkit.Unity.UX
 
             switch (obj.name)
             {
+                case "ChangeColor":
+                    marker.gameObject.GetComponent<MarkerCommands>().ChangeColorMarker();
+                    break;
                 case "Remove":
                     // Destroy the target object, Bounding Box, Bounding Box Rig and App Bar
                     boundingBox.Target.GetComponent<BoundingBoxRig>().Deactivate();

@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class AnchorObject : MonoBehaviour, IManipulationHandler, IFocusable
 {
-    public string AnchorName;
+    private string AnchorName;
     public bool Undo = false;
     private Vector3 SavedPosition;
     private Quaternion SavedRotation;
@@ -15,7 +15,7 @@ public class AnchorObject : MonoBehaviour, IManipulationHandler, IFocusable
 
     void Start()
     {
-        AnchorName = "123456789";
+        AnchorName = WorldAnchorManager.GenerateAnchorName(gameObject, GenerateUUID());
         AttachAnchor();
     }
 
@@ -29,8 +29,14 @@ public class AnchorObject : MonoBehaviour, IManipulationHandler, IFocusable
         }
     }
 
+    private string GenerateUUID()
+    {
+        return System.Guid.NewGuid().ToString();
+    }
+
     public void RestoreBackupAnchor()
     {
+        Debug.Log("RestoreBackupAnchor");
         this.gameObject.transform.position = OldPosition;
         this.gameObject.transform.rotation = OldRotation;
         WorldAnchorManager.Instance.AttachAnchor(this.gameObject, AnchorName);
@@ -57,6 +63,8 @@ public class AnchorObject : MonoBehaviour, IManipulationHandler, IFocusable
 
     public void UpdatePositionAndRemoveAnchor()
     {
+        Debug.Log("UpdatePositionAndRemoveAnchor");
+
         OldPosition = SavedPosition = this.gameObject.transform.position;
         OldRotation = SavedRotation = this.gameObject.transform.rotation;
         WorldAnchorManager.Instance.RemoveAnchor(this.gameObject);

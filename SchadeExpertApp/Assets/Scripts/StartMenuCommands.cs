@@ -14,15 +14,6 @@ public class StartMenuCommands : MonoBehaviour {
     public GameObject projectListScreen;
 
     private GameObject startMenu;
-    // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
     public void OpenProjectlistScreen(bool isStartmenuActive)
     {

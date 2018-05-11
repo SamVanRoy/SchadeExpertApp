@@ -1,4 +1,5 @@
 ﻿using HoloToolkit.Unity;
+using HoloToolkit.Unity.SpatialMapping;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,27 +10,14 @@ public class MainMenuCommands : MonoBehaviour {
     private GameObject marker;
 
     private GameObject mainMenu;
-    public GameObject lineDrawer;
 
     public void MakeNewMarker()
     {
-
-        //prefabje.transform.Rotate(180f, 0, 0);
         marker = Instantiate(markerPrefab, transform.position, markerPrefab.transform.rotation);
-        marker.AddComponent<AnchorObject>();
-        //marker.AddComponent<PersistWorldAnchor>();
-        //marker.gameObject.tag = "Marker";
-
-        //Instantiate(Marker, new Vector3(0,0,0), prefabje.transform.rotation);
+        //gameObject.GetComponent<TapToPlace>().IsBeingPlaced
     }
 
-    public void ChangeColorMarker()
-    {
-        //hier iets doen in de genre van het oproepen van marker waar je naar gazed of waarvan je de menu neemt
-        marker.GetComponentInChildren<MeshRenderer>().material.SetColor("_Color", Color.red);
-    }
-
-    public void ToggleMenu(bool visibility)
+    public void ToggleVisibilityMainMenu(bool visibility)
     {
         if(mainMenu == null)
         {
@@ -38,28 +26,15 @@ public class MainMenuCommands : MonoBehaviour {
         mainMenu.SetActive(visibility);
     }
 
-    //public void GoBackToStartMenu()
-    //{
-    //    SceneManager.LoadScene("StartMenu", LoadSceneMode.Single);
-    //}
-
-    public void ToggleLineDrawerScript()
-    {
-        //lineDrawer.AddComponent<ReadyGestureDetect>();
-        lineDrawer.GetComponent<ReadyGestureDetect>().enabled = !lineDrawer.GetComponent<ReadyGestureDetect>().isActiveAndEnabled;
-    }
-
-    public void testeke()
+    public void DrawLine()
     {
         GameObject lineDrawManager = GameObject.Find("LineDrawManager");
-        if (lineDrawer.GetComponent<ReadyGestureDetect>() == null){
-            Debug.Log("add script");
+        if (lineDrawManager.GetComponent<ReadyGestureDetect>() == null){
             lineDrawManager.AddComponent<ReadyGestureDetect>();
         }
         else
         {
-            Debug.Log("DESTROY script");
-            Destroy(lineDrawer.GetComponent<ReadyGestureDetect>());
-        }
+            Destroy(lineDrawManager.GetComponent<ReadyGestureDetect>());
+        } 
     }
 }

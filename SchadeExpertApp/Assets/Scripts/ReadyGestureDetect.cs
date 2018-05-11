@@ -1,5 +1,7 @@
 ﻿using HoloToolkit.Unity.InputModule;
+using HoloToolkit.Unity.InputModule.Utilities.Interactions;
 using HoloToolkit.Unity.SpatialMapping;
+using HoloToolkit.Unity.UX;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,7 +9,7 @@ using UnityEngine;
 using UnityEngine.XR.WSA.Input;
 
 public class ReadyGestureDetect : MonoBehaviour {
-    
+
     private int index1;
     private int index2;
 
@@ -15,6 +17,9 @@ public class ReadyGestureDetect : MonoBehaviour {
     private LineRenderer lineRenderer;
     private GameObject myLine;
     Vector3 positionHand;
+    private float distance = 2.0f;
+
+    public GameObject linePrefab;
 
     private Vector3 startPos;    // Start position of line
     private Vector3 endPos;    // End position of line
@@ -28,21 +33,34 @@ public class ReadyGestureDetect : MonoBehaviour {
         InteractionManager.InteractionSourcePressed += InteractionManager_InteractionSourcePressed;
         InteractionManager.InteractionSourceUpdated += InteractionManager_InteractionSourceUpdated;
 
-        //LineRenderer lineRenderer = gameObject.AddComponent<LineRenderer>();
-        //lineRenderer.material = redSample;
-        //lineRenderer.widthMultiplier = 0.01f;
+        StartCoroutine(loadFromResourcesFolder());
 
         myLine = new GameObject();
-        myLine.AddComponent<LineRenderer>();
-        addColliderToLine();
-        myLine.AddComponent<TapToPlace>();
-        lineRenderer = myLine.GetComponent<LineRenderer>();
-        lineRenderer.material = color;
-        lineRenderer.widthMultiplier = 0.01f;
+
 
         index1 = 0;
         index2 = 0;
 
+    }
+
+    IEnumerator loadFromResourcesFolder()
+    {
+        //Request data to be loaded
+        ResourceRequest loadAsync = Resources.LoadAsync("Line", typeof(GameObject));
+
+        //Wait till we are done loading
+        while (!loadAsync.isDone)
+        {
+            yield return null;
+        }
+
+        //Get the loaded data
+        GameObject prefab = loadAsync.asset as GameObject;
+        myLine = Instantiate(prefab);
+        myLine.AddComponent<LineRenderer>();
+        lineRenderer = myLine.GetComponent<LineRenderer>();
+        lineRenderer.material.color = Color.blue;
+        lineRenderer.widthMultiplier = 0.01f;
     }
 
     private void InteractionManager_InteractionSourceUpdated(InteractionSourceUpdatedEventArgs obj)
@@ -59,6 +77,11 @@ public class ReadyGestureDetect : MonoBehaviour {
                 if (lineRenderer.positionCount == 1)
                 {
                     startPos = positionHand;
+                    Vector3 adjustedHandposition = new Vector3(positionHand.x, positionHand.y, positionHand.z + 2);
+                    lineRenderer.transform.position = adjustedHandposition;
+                    Debug.Log("hallo");
+                    Debug.Log(lineRenderer.transform.position);
+
                 }
                 else
                 {
@@ -70,16 +93,10 @@ public class ReadyGestureDetect : MonoBehaviour {
 
     private void DrawLine(Vector3 positionHand)
     {
-        //Vector3 heading = Camera.main.transform.forward;
-        //heading += new Vector3(0, 0, 2);
         lineRenderer.positionCount = index1+1;
-        Debug.Log("index1: " + index1);
-        Vector3 adjustedHandposition = new Vector3(positionHand.x, positionHand.y, positionHand.z + 2);
-        Debug.Log("adjustedHandposition: " + adjustedHandposition);
-        //adjustedHandposition = adjustedHandposition + heading;
-        //Debug.Log("adjustedHandposition2: " + adjustedHandposition);
-        //myLine.transform.position = heading;
-        lineRenderer.SetPosition(index1, adjustedHandposition);
+  
+        Vector3 probeersel2 = Camera.main.transform.position + positionHand + Camera.main.transform.forward * distance;
+        lineRenderer.SetPosition(index1, probeersel2);
         index1++;
         //UpdateCollider();
     }
@@ -88,7 +105,7 @@ public class ReadyGestureDetect : MonoBehaviour {
     {
         BoxCollider col = myLine.GetComponent<BoxCollider>();
         float lineLength = Vector3.Distance(startPos, endPos); // length of line
-        col.size = new Vector3(lineLength, 0.1f, 1f); // size of collider is set where X is length of line, Y is width of line, Z will be set as per requirement
+        col.size = new Vector3(lineLength, 0.1f, 2f); // size of collider is set where X is length of line, Y is width of line, Z will be set as per requirement
         Vector3 midPoint = (startPos + endPos) / 2;
         col.transform.position = midPoint; // setting position of collider object
         // Following lines calculate the angle between startPos and endPos
@@ -147,5 +164,11 @@ public class ReadyGestureDetect : MonoBehaviour {
     {
         //wanneer je vinger terug loslaat van pinch
         Debug.Log("source released");
+    }
+
+    private void OnDestroy()
+    {
+        InteractionManager.InteractionSourcePressed -= InteractionManager_InteractionSourcePressed;
+        InteractionManager.InteractionSourceUpdated -= InteractionManager_InteractionSourceUpdated;
     }
 }

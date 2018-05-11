@@ -36,7 +36,7 @@ public class CaptureVideo : MonoBehaviour {
         }
     }
 
-    public void StartVideoCaptureTest()
+    public void StartVideoCapture()
     {
 
         Resolution cameraResolution = VideoCapture.SupportedResolutions.OrderByDescending((res) => res.width * res.height).First();
@@ -122,10 +122,8 @@ public class CaptureVideo : MonoBehaviour {
         m_VideoCapture.StopVideoModeAsync(OnStoppedVideoCaptureMode);
     }
 
-    public void StopRecording()
+    public void StopVideo()
     {
-        Debug.Log("Stoprecording 1: " + isRecording);
         isRecording = false;
-        Debug.Log("Stoprecording 2: " + isRecording);
     }
 }

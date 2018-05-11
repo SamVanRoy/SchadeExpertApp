@@ -21,8 +21,6 @@ public class CapturePhotoScript : MonoBehaviour {
 
     private CompoundButton buttonYes;
 
-    private GameObject mainMenu;
-
     /// <summary>
     /// The path to the image in the applications local folder.
     /// </summary>
@@ -36,7 +34,7 @@ public class CapturePhotoScript : MonoBehaviour {
 
     public void TakePicture()
     {
-
+        Debug.Log("take picture");
         DestroyAllPreviousPhotosInWorld();
 
         Resolution cameraResolution = PhotoCapture.SupportedResolutions.OrderByDescending((res) => res.width * res.height).First();
@@ -56,6 +54,7 @@ public class CapturePhotoScript : MonoBehaviour {
             // Activate the camera
             photoCaptureObject.StartPhotoModeAsync(cameraParameters, delegate (PhotoCapture.PhotoCaptureResult result) {
                 // Take a picture
+                Debug.Log("now for real!");
                 photoCaptureObject.TakePhotoAsync(OnCapturedPhotoToMemory);
             });
         });
@@ -77,6 +76,7 @@ public class CapturePhotoScript : MonoBehaviour {
 
     private void DestroyAllPreviousPhotosInWorld()
     {
+        Debug.Log("destroy all");
         foreach (Transform child in transform)
         {
             GameObject.Destroy(child.gameObject);
@@ -85,27 +85,31 @@ public class CapturePhotoScript : MonoBehaviour {
 
     private void OnCapturedPhotoToMemory(PhotoCapture.PhotoCaptureResult result, PhotoCaptureFrame photoCaptureFrame)
     {
-    
+        Debug.Log("begin memorty");
         // Copy the raw image data into our target texture
         photoCaptureFrame.UploadImageDataToTexture(targetTexture);
 
         // Create a gameobject that we can apply our texture to
         GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
         Renderer quadRenderer = quad.GetComponent<Renderer>() as Renderer;
-        quadRenderer.material = new Material(Shader.Find("Unlit/Texture"));
+        Debug.Log("before shader");
+        quadRenderer.material = new Material(Shader.Find("Standard"));
+        Debug.Log("after shader");
 
-        mainMenu = GameObject.Find("MainMenu");
+        float distance = 2.0f;
+        Vector3 CameraPosition = Camera.main.transform.position + Camera.main.transform.forward * distance;
 
         quad.transform.parent = this.transform;
         //this.transform.position = Camera.main.transform.position;
-        quad.transform.position = mainMenu.transform.position;
+        quad.transform.position = CameraPosition;
 
         foreach (Transform child in transform)
         {
+            Debug.Log("billboard");
             child.gameObject.AddComponent<Billboard>();
         }
-            
-        
+
+
         //var quadHeight = Camera.main.orthographicSize;
         //var quadWidth = quadHeight * Screen.width / Screen.height * 1.0f;
         //quad.transform.localScale = new Vector3(quadWidth, quadHeight, 1);
@@ -114,7 +118,7 @@ public class CapturePhotoScript : MonoBehaviour {
         //quad.transform.Translate(1.0f, 0.0f, 0.0f);
 
         //zet foto op het gameobject
-        quadRenderer.material.SetTexture("_MainTex", targetTexture);
+        quadRenderer.material.mainTexture = targetTexture;
 
         SaveTextureToFile(targetTexture);
 

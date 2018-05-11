@@ -43,11 +43,10 @@ public class FolderManager : MonoBehaviour {
     }
 #endif
 
-    public void SetProjectInfo(GameObject projectNameInputField)
+    public void GetProjectNameFromInputField(GameObject projectNameInputField)
     {
         projectName = projectNameInputField.GetComponent<InputField>().text;
-        Debug.Log("projectname: " + projectName);
-        
+        Debug.Log("projectname: " + projectName);     
     }
 
     public void MakeNewProjectFolderWrapper()
@@ -83,10 +82,7 @@ public class FolderManager : MonoBehaviour {
             Debug.Log("Geen geldig pad getAllProjectFolders");
             return null;
         }
-
-      
-    //https://stackoverflow.com/questions/7296956/how-to-list-all-sub-directories-in-a-directory
-}
+    }
 #endif
 
 #if NETFX_CORE
@@ -96,30 +92,18 @@ public class FolderManager : MonoBehaviour {
     }
 #endif
 
-    //var directories = Directory.GetDirectories(ApplicationData.Current.LocalFolder.Path);
-    // Process all files in the directory passed in, recurse on any directories 
-    // that are found, and process the files they contain.
-    private void ProcessDirectory(string targetDirectory)
+    public static async void CopyRecordingFileToProject(object sender, RecordingFileEventArgs e)
     {
-        // Process the list of files found in the directory.
-        string[] fileEntries = Directory.GetFiles(targetDirectory);
-        foreach (string fileName in fileEntries)
-            ProcessFile(fileName);
-
-        // Recurse into subdirectories of this directory.
-        string[] subdirectoryEntries = Directory.GetDirectories(targetDirectory);
-        foreach (string subdirectory in subdirectoryEntries)
-        {
-            ProcessDirectory(subdirectory);
-            Debug.Log("subdirectory");
-        }
-
+        Debug.Log("ontvang event");
+#if NETFX_CORE
+        StorageFile recordedVoiceFile = await StorageFile.GetFileFromPathAsync(e.RecordingFilePath);
+        recordedVoiceFile.CopyAsync(currentProjectFolder, GenerateFileNameWithPrefix("VoiceRecording", "wav"));
+#endif
     }
 
-    // Insert logic for processing found files here.
-    private void ProcessFile(string path)
+    private static String GenerateFileNameWithPrefix(String filePrefix, String fileExtension)
     {
-        Debug.Log("Processed file: " + path);
+        return string.Format(@"{0}_{1:yyyy-MM-dd_hh-mm-ss-tt}.{2}", filePrefix, DateTime.Now, fileExtension);
     }
 
     public void CreateScene()

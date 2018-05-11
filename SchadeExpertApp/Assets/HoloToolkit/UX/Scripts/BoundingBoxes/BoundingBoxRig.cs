@@ -177,6 +177,7 @@ namespace HoloToolkit.Unity.UX
 
             appBarInstance = Instantiate(appBarPrefab) as AppBar;
             appBarInstance.BoundingBox = boxInstance;
+            appBarInstance.marker = gameObject;
 
             boxInstance.IsVisible = false;
         }
