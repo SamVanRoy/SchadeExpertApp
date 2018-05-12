@@ -102,7 +102,9 @@ public class ProjectScrollList : MonoBehaviour {
 
     public async Task<List<StorageFile>> GetAllFilesFromCurrentClickedProjectAsync()
     {
+        Debug.Log("GetAllFilesFromCurrentClickedProjectAsync");
         var tempList = await FolderManager.GetAllFilesFromProject(currentClickedProject);
+        Debug.Log("GetAllFilesFromCurrentClickedProjectAsync" + tempList);
         return new List<StorageFile>(tempList);
     }
 #endif

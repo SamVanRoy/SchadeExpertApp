@@ -88,6 +88,7 @@ public class FolderManager : MonoBehaviour {
 #if NETFX_CORE
     public static IAsyncOperation<IReadOnlyList<StorageFile>> GetAllFilesFromProject(StorageFolder projectFolder)
     {
+        Debug.Log("GetAllFilesFromProject");
         return projectFolder.GetFilesAsync();
     }
 #endif

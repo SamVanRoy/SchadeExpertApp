@@ -59,19 +59,25 @@ public class ButtonScript : MonoBehaviour {
         projectList.AddFilesFromClickedProjectWrapper();
     }
 
-#if NETFX_CORE
+
     private async System.Threading.Tasks.Task ShareProjectFilesAsync()
     {
+        Debug.Log("ShareProjectFilesAsync");
+#if NETFX_CORE
         List<StorageFile> currentProjectFiles = await projectList.GetAllFilesFromCurrentClickedProjectAsync();
+        Debug.Log("currentProjectFiles");
         List<String> currentProjectFilesPaths = new List<String>();
+        Debug.Log("currentProjectFilesPaths");
         foreach (var file in currentProjectFiles)
         {
+            Debug.Log("slet");
             currentProjectFilesPaths.Add(file.Path);
         }
-        //MailManager.email_send(currentProjectFilesPaths);
+        MailManager.grmbl(currentProjectFilesPaths);
+#endif
 
     }
-#endif
+
 
     private void DeleteThisProject()
     {
