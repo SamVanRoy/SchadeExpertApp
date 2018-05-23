@@ -1,9 +1,11 @@
 ﻿{
   "dependencies": {
-    "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0"
+    "MailKit": "2.0.3",
+    "Microsoft.NETCore.UniversalWindowsPlatform": "6.1.4",
+    "MimeKit": "2.0.3"
   },
   "frameworks": {
-    "uap10.0": {}
+    "uap10.0.16299": {},
   },
   "runtimes": {
     "win10-arm": {},

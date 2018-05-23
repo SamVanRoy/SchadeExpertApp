@@ -25,9 +25,10 @@ public class ProjectScrollList : MonoBehaviour {
     public SimpleObjectPool projectNameButtonObjectPool;
     public SimpleObjectPool actionButtonObjectPool;
 
+
     // Use this for initialization
     void Start () {
-        
+        //test();
     }
 
     public void AddProjectsToScreenWrapper()
@@ -64,7 +65,7 @@ public class ProjectScrollList : MonoBehaviour {
         return new List<StorageFolder>(await FolderManager.GetAllProjectFolders());
     }
 #endif
-
+    
     public void SetCurrentClickedProject(String clickedProjectName)
     {
 #if NETFX_CORE
@@ -116,7 +117,6 @@ public class ProjectScrollList : MonoBehaviour {
         newButton.GetComponentInChildren<Text>().text = text;
 
         ButtonScript buttonScript = newButton.GetComponent<ButtonScript>();
-        buttonScript.SetCurrentProjectlist(this);
         buttonScript.buttonType = buttonType;
         buttonScript.index = index;
 

@@ -26,7 +26,7 @@ public class FolderManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
 #if NETFX_CORE
-        GetProjectRootFolder();
+        //GetProjectRootFolder();
 #endif
     }
 
@@ -55,6 +55,15 @@ public class FolderManager : MonoBehaviour {
         MakeNewProjectFolder();
 #endif
     }
+
+    public static void SetCurrentProjectFolder(int currentProjectFolderIndex)
+    {
+        Debug.Log("SetCurrentProjectFolder: " + currentProjectFolderIndex);
+#if NETFX_CORE       
+        currentProjectFolder = ProjectScrollList.projectList[currentProjectFolderIndex];;
+#endif
+    }
+
 
 #if NETFX_CORE
     public async void MakeNewProjectFolder()
@@ -105,14 +114,5 @@ public class FolderManager : MonoBehaviour {
     private static String GenerateFileNameWithPrefix(String filePrefix, String fileExtension)
     {
         return string.Format(@"{0}_{1:yyyy-MM-dd_hh-mm-ss-tt}.{2}", filePrefix, DateTime.Now, fileExtension);
-    }
-
-    public void CreateScene()
-    {
-#if UNITY_EDITOR
-        EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-        //SceneManager.CreateScene("testje");
-        //SceneManager.LoadScene("testje", LoadSceneMode.Single);
-#endif
     }
 }

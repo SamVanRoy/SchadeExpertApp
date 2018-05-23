@@ -6,10 +6,10 @@
 # Write a line equal to 'keep-all' (without quotes) to keep files regardless their modification (preserved accross builds)
 # Default behavior is to never overwrite files
 SchadeExpertApp.sln: modified
-GeneratedProjects\UWP\Assembly-CSharp\project.json: 4FCF72A4D5EDB37E24C206A7BCFE7AF1
+GeneratedProjects\UWP\Assembly-CSharp\project.json: modified
 SchadeExpertApp\App.cs: 1798557FFF3E4CC26A48DBA5D20E0E54
 SchadeExpertApp\Package.appxmanifest: modified
-SchadeExpertApp\project.json: 1D02BC64BAC0D041019673A1C4C51737
+SchadeExpertApp\project.json: modified
 SchadeExpertApp\SchadeExpertApp.csproj: modified
 SchadeExpertApp\SchadeExpertApp.csproj.user: modified
 SchadeExpertApp\Assets\SplashScreen.scale-200.png: 60618416282ED104FD1473935716045D

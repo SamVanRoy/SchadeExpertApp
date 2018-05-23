@@ -10,35 +10,39 @@ public class StartMenuCommands : MonoBehaviour {
     public GameObject videoManager;
     public GameObject mainMenu;
     public GameObject newProjectInformationScreen;
+    public GameObject helpScreen;
 
     public GameObject projectListScreen;
 
     private GameObject startMenu;
 
+    void Start()
+    {
+        startMenu = gameObject;
+    }
+
     public void OpenProjectlistScreen(bool isStartmenuActive)
     {
-        startMenu = GameObject.Find("StartMenu");
         startMenu.SetActive(isStartmenuActive);
         projectListScreen.SetActive(!isStartmenuActive);
     }
 
     public void OpenNewProjectInfoScreen(bool isStartmenuActive)
     {
-        startMenu = GameObject.Find("StartMenu");
         startMenu.SetActive(isStartmenuActive);
-
         newProjectInformationScreen.SetActive(!isStartmenuActive);
     }
 
     public void InitWorldNewProject(bool isStartmenuActive)
     {
-        //startMenu = GameObject.Find("StartMenu");
         startMenu.SetActive(isStartmenuActive);
         newProjectInformationScreen.SetActive(isStartmenuActive);
         //speechManager.SetActive(!isStartmenuActive);
         photoManager.SetActive(!isStartmenuActive);
         videoManager.SetActive(!isStartmenuActive);
         mainMenu.SetActive(!isStartmenuActive);
+        projectListScreen.SetActive(false);
+
     }
 
     public void GoBackToStartMenu()
@@ -51,8 +55,23 @@ public class StartMenuCommands : MonoBehaviour {
         projectListScreen.SetActive(false);
     }
 
+    public void HideStartMenu()
+    {
+        //TODO:look if neccesary with gameobject
+        if (startMenu == null)
+        {
+            startMenu = GameObject.Find("StartMenu");
+        }
+        startMenu.SetActive(false);
+    }
+
     public void ClearTextInputfield(KeyboardInputField inputfield)
     {
         inputfield.text = "";
+    }
+
+    public void ToggleVisibilityHelpMenu(bool isVisible)
+    {
+        helpScreen.SetActive(isVisible);
     }
 }

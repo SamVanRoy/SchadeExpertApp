@@ -161,6 +161,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonComponent: {fileID: 114333677096391158}
+  buttonType: 0
+  index: 0
+  projectCanvas: {fileID: 223706107828717372, guid: b8792dfe8a4b74648895aa5b956831dd,
+    type: 2}
+  startMenu: {fileID: 1157995571985712, guid: ced162c3837a4984aa9894aab879a8e8, type: 2}
 --- !u!114 &114949559784430392
 MonoBehaviour:
   m_ObjectHideFlags: 1
