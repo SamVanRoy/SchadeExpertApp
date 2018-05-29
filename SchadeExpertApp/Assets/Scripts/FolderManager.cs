@@ -26,7 +26,7 @@ public class FolderManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
 #if NETFX_CORE
-        //GetProjectRootFolder();
+        GetProjectRootFolder();
 #endif
     }
 

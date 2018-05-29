@@ -76,7 +76,6 @@ public class CapturePhotoScript : MonoBehaviour {
 
     private void DestroyAllPreviousPhotosInWorld()
     {
-        Debug.Log("destroy all");
         foreach (Transform child in transform)
         {
             GameObject.Destroy(child.gameObject);
@@ -85,16 +84,13 @@ public class CapturePhotoScript : MonoBehaviour {
 
     private void OnCapturedPhotoToMemory(PhotoCapture.PhotoCaptureResult result, PhotoCaptureFrame photoCaptureFrame)
     {
-        Debug.Log("begin memorty");
         // Copy the raw image data into our target texture
         photoCaptureFrame.UploadImageDataToTexture(targetTexture);
 
         // Create a gameobject that we can apply our texture to
         GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
         Renderer quadRenderer = quad.GetComponent<Renderer>() as Renderer;
-        Debug.Log("before shader");
         quadRenderer.material = new Material(Shader.Find("Standard"));
-        Debug.Log("after shader");
 
         float distance = 2.0f;
         Vector3 CameraPosition = Camera.main.transform.position + Camera.main.transform.forward * distance;
@@ -108,14 +104,6 @@ public class CapturePhotoScript : MonoBehaviour {
             Debug.Log("billboard");
             child.gameObject.AddComponent<Billboard>();
         }
-
-
-        //var quadHeight = Camera.main.orthographicSize;
-        //var quadWidth = quadHeight * Screen.width / Screen.height * 1.0f;
-        //quad.transform.localScale = new Vector3(quadWidth, quadHeight, 1);
-        //quad.transform.localPosition = Camera.main.transform.position;
-        //quad.transform.Translate(0.15f, 0.0f, 0.5f);
-        //quad.transform.Translate(1.0f, 0.0f, 0.0f);
 
         //zet foto op het gameobject
         quadRenderer.material.mainTexture = targetTexture;
@@ -157,11 +145,7 @@ public class CapturePhotoScript : MonoBehaviour {
         var buttonNo = Instantiate(buttonNoPrefab, quad.transform.position, buttonNoPrefab.transform.rotation);
         buttonNo.transform.parent = quad.transform;
         buttonNo.transform.localPosition = new Vector3(0.10f, -0.15f, 0);
-        //buttonNo.transform.localPosition = buttonYes.transform.localPosition;
-        //buttonNo.transform.Translate(0.10f, 0, 0);
-
-
-
+        
         buttonNo.OnButtonPressed += ButtonNo_OnButtonPressed;
     }
 
@@ -170,15 +154,6 @@ public class CapturePhotoScript : MonoBehaviour {
         buttonYes = Instantiate(buttonYesPrefab, quad.transform.position, buttonYesPrefab.transform.rotation);
         buttonYes.transform.parent = quad.transform;
         buttonYes.transform.localPosition = new Vector3(0, -0.15f, 0);
-
-        //float width = quad.GetComponent<Renderer>().bounds.size.x;
-        //float height = quad.GetComponent<Renderer>().bounds.size.y;
-
-        //Vector3 bottom = quad.transform.position;
-
-        //bottom.y -= (height / 3);
-
-        //buttonYes.transform.position = bottom;
 
         buttonYes.OnButtonPressed += ButtonYes_OnButtonPressed;
     }

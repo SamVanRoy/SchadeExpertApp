@@ -75,5 +75,5 @@ MonoBehaviour:
   handMotionToRotate: 1
   boundingBoxPrefab: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
     type: 2}
-  appBarPrefab: {fileID: 114050950401502068, guid: aa610ada334bff640a535f0d23a9a15c,
+  appBarPrefab: {fileID: 114025770209743652, guid: 6579de710f4f8b641a86331321088617,
     type: 2}

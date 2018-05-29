@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MarkerCommands : MonoBehaviour {
-    public void ChangeColorMarker()
+    public void ChangeColorMarker(Color color)
     {
-        gameObject.GetComponent<Renderer>().material.color = Color.yellow;
+        gameObject.GetComponent<Renderer>().material.color = color;
     }
 }

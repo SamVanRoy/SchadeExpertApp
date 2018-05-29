@@ -21,6 +21,8 @@ public class ButtonScript : MonoBehaviour
 
     public GameObject content;
 
+    public static ButtonTypes lastClickedButtontype;
+
 
 
     // Use this for initialization
@@ -47,10 +49,11 @@ public class ButtonScript : MonoBehaviour
                 break;
             case ButtonTypes.DeleteProject:
                 ToggleVisibilityDeleteConfirmationScreen(true);
+                lastClickedButtontype = ButtonTypes.DeleteProject;
                 break;
             case ButtonTypes.DeleteFile:
                 ToggleVisibilityDeleteConfirmationScreen(true);
-                DeleteThisFileAsync();
+                lastClickedButtontype = ButtonTypes.DeleteFile;
                 break;
         }
         
@@ -97,7 +100,8 @@ public class ButtonScript : MonoBehaviour
 
     public void DeleteAppropriateButtonType()
     {
-        switch (buttonType)
+        Debug.Log("lastClickedButtontype: " + lastClickedButtontype);
+        switch (lastClickedButtontype)
         {
             case ButtonTypes.DeleteProject:
                 DeleteThisProject();

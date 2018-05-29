@@ -1,11 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+//NOTE FINAL WORK: adjusted script by Sam Van Roy
+
 using HoloToolkit.Unity.Buttons;
 using HoloToolkit.Unity.InputModule;
 using HoloToolkit.Unity.Receivers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -177,7 +180,6 @@ namespace HoloToolkit.Unity.UX
         [SerializeField]
         public GameObject marker;
 
-
         private ButtonTemplate[] defaultButtons;
         private Vector3[] forwards = new Vector3[4];
         private Vector3 targetBarSize = Vector3.one;
@@ -225,7 +227,10 @@ namespace HoloToolkit.Unity.UX
             switch (obj.name)
             {
                 case "ChangeColor":
-                    marker.gameObject.GetComponent<MarkerCommands>().ChangeColorMarker();
+                    GameObject colorPickerScreen = Resources.Load("Prefabs/ColorPickerCanvas") as GameObject;
+                    Vector3 position = new Vector3(transform.position.x, this.transform.Find("ButtonParent/BackgroundBar").GetComponent<MeshRenderer>().bounds.extents.y, transform.position.z);
+                    colorPickerScreen = Instantiate(colorPickerScreen, position, transform.rotation);
+                    colorPickerScreen.transform.Find("Picker").GetComponent<ColorPicker>().InitializeColorPicker(marker, colorPickerScreen);
                     break;
                 case "Remove":
                     // Destroy the target object, Bounding Box, Bounding Box Rig and App Bar

@@ -183,4 +183,6 @@ MonoBehaviour:
   backgroundBar: {fileID: 1035239762738530}
   boundingBox: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
     type: 2}
-  Marker: {fileID: 1614954143073554, guid: 3deeb98e1a50f494d89338731ada28d8, type: 2}
+  marker: {fileID: 1614954143073554, guid: 3deeb98e1a50f494d89338731ada28d8, type: 2}
+  colorPicker: {fileID: 1764131892677300, guid: 5f899dc4387b0c4419c434a5fa2696ca,
+    type: 2}

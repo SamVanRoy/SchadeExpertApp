@@ -72,6 +72,11 @@ public class StartMenuCommands : MonoBehaviour {
 
     public void ToggleVisibilityHelpMenu(bool isVisible)
     {
+        if (isVisible)
+        {
+            Vector3 positionHelpscreen = new Vector3(0, 0, 0);
+            helpScreen.transform.position = ReadyGestureDetect.CalculatePositionInFrontOfCamera(positionHelpscreen);
+        }
         helpScreen.SetActive(isVisible);
     }
 }

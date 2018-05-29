@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+//NOTE FINAL WORK: adjusted script by Sam Van Roy
+
 using UnityEngine;
 using System.Collections;
 using HoloToolkit.Unity;
@@ -38,6 +40,12 @@ namespace HoloToolkit.Examples.GazeRuler
                     manager = LineManager.Instance;
                     break;
             }
+        }
+
+        public void SetMeasureManagerActive(bool isActive)
+        {
+            gameObject.SetActive(isActive);
+            ModeTipObject.SetActive(isActive);
         }
 
         // place spatial point

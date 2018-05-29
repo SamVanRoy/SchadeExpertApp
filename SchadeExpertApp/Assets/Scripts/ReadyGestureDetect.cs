@@ -17,7 +17,7 @@ public class ReadyGestureDetect : MonoBehaviour {
     private LineRenderer lineRenderer;
     private GameObject myLine;
     Vector3 positionHand;
-    private float distance = 2.0f;
+    private static float distance = 2.0f;
 
     public GameObject linePrefab;
 
@@ -36,7 +36,7 @@ public class ReadyGestureDetect : MonoBehaviour {
         StartCoroutine(loadFromResourcesFolder());
 
         myLine = new GameObject();
-
+        myLine.transform.position = CalculatePositionInFrontOfCamera(new Vector3(0, 0, 0));
 
         index1 = 0;
         index2 = 0;
@@ -94,11 +94,16 @@ public class ReadyGestureDetect : MonoBehaviour {
     private void DrawLine(Vector3 positionHand)
     {
         lineRenderer.positionCount = index1+1;
-  
-        Vector3 probeersel2 = Camera.main.transform.position + positionHand + Camera.main.transform.forward * distance;
-        lineRenderer.SetPosition(index1, probeersel2);
+
+        Vector3 calculatedPositionLine = CalculatePositionInFrontOfCamera(positionHand);
+        lineRenderer.SetPosition(index1, calculatedPositionLine);
         index1++;
         //UpdateCollider();
+    }
+
+    public static Vector3 CalculatePositionInFrontOfCamera(Vector3 positionObject)
+    {
+        return Camera.main.transform.position + positionObject + Camera.main.transform.forward * distance;
     }
 
     private void UpdateCollider()
@@ -131,25 +136,8 @@ public class ReadyGestureDetect : MonoBehaviour {
 
     private void InteractionManager_InteractionSourcePressed(InteractionSourcePressedEventArgs obj)
     {
-        myLine.transform.position = positionHand;
+        //myLine.transform.position = positionHand;
        
-        //draw = true;
-        //Vector3 positionHand;
-        //obj.state.sourcePose.TryGetPosition(out positionHand);
-        ////lineRenderer = GetComponent<LineRenderer>();
-        //Debug.Log("Index1: " + index1);
-        ////lineRenderer.SetPosition(index1, positionHand);
-        //index1++;
-        //if (obj.state.anyPressed)
-        //{
-        //    //obj.state.sourcePose.TryGetPosition(out positionHand);
-        //    //positionList.Add(positionHand);
-        //    //lineRenderer.SetPositions(positionList);
-        //    //lineRenderer.SetPosition(index2, positionHand);
-        //    index2++;    
-        //}
-        //Debug.Log("Index2: " + index2);
-
         //vingers in pressed state
         Debug.Log("Source pressed");
     }
@@ -163,6 +151,7 @@ public class ReadyGestureDetect : MonoBehaviour {
     private void InteractionManager_InteractionSourceReleased(InteractionSourceReleasedEventArgs obj)
     {
         //wanneer je vinger terug loslaat van pinch
+        myLine.transform.position = endPos;
         Debug.Log("source released");
     }
 
