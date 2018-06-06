@@ -17,7 +17,7 @@ public class ReadyGestureDetect : MonoBehaviour {
     private LineRenderer lineRenderer;
     private GameObject myLine;
     Vector3 positionHand;
-    private static float distance = 2.0f;
+    private static float distance = 1.0f;
 
     public GameObject linePrefab;
 
@@ -29,14 +29,14 @@ public class ReadyGestureDetect : MonoBehaviour {
     // Use this for initialization
     void Start () {
         //InteractionManager.InteractionSourceDetected += InteractionManager_InteractionSourceDetected;
-        //InteractionManager.InteractionSourceReleased += InteractionManager_InteractionSourceReleased;
+        InteractionManager.InteractionSourceReleased += InteractionManager_InteractionSourceReleased;
         InteractionManager.InteractionSourcePressed += InteractionManager_InteractionSourcePressed;
         InteractionManager.InteractionSourceUpdated += InteractionManager_InteractionSourceUpdated;
 
         StartCoroutine(loadFromResourcesFolder());
 
         myLine = new GameObject();
-        myLine.transform.position = CalculatePositionInFrontOfCamera(new Vector3(0, 0, 0));
+        myLine.transform.position = CalculatePositionWithDistanceInFrontOfCamera(2.0f);
 
         index1 = 0;
         index2 = 0;
@@ -95,15 +95,50 @@ public class ReadyGestureDetect : MonoBehaviour {
     {
         lineRenderer.positionCount = index1+1;
 
-        Vector3 calculatedPositionLine = CalculatePositionInFrontOfCamera(positionHand);
+        Vector3 calculatedPositionLine = CalculatePositionObjectInFrontOfCamera(positionHand);
         lineRenderer.SetPosition(index1, calculatedPositionLine);
         index1++;
         //UpdateCollider();
     }
 
-    public static Vector3 CalculatePositionInFrontOfCamera(Vector3 positionObject)
+    public static Vector3 CalculatePositionObjectInFrontOfCamera(Vector3 positionObject)
     {
         return Camera.main.transform.position + positionObject + Camera.main.transform.forward * distance;
+    }
+
+    public static Vector3 CalculatePositionWithDistanceInFrontOfCamera(float distance)
+    {
+        return Camera.main.transform.position + Camera.main.transform.forward * distance;
+    }
+
+    private void InteractionManager_InteractionSourcePressed(InteractionSourcePressedEventArgs obj)
+    {
+        //myLine.transform.position = positionHand;
+       
+        //vingers in pressed state
+        Debug.Log("Source pressed");
+    }
+
+    private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs obj)
+    {
+        //vinger is aanwezig in het scherm
+        Debug.Log("source detected");
+    }
+
+    private void InteractionManager_InteractionSourceReleased(InteractionSourceReleasedEventArgs obj)
+    {
+        //wanneer je vinger terug loslaat van pinch
+        Debug.Log("source released");
+        Debug.Log("lol: " + endPos);
+        myLine.transform.position = CalculatePositionObjectInFrontOfCamera(endPos);
+        Debug.Log("lol2: " + myLine.transform.position);
+    }
+
+    private void OnDestroy()
+    {
+        InteractionManager.InteractionSourcePressed -= InteractionManager_InteractionSourcePressed;
+        InteractionManager.InteractionSourceUpdated -= InteractionManager_InteractionSourceUpdated;
+        InteractionManager.InteractionSourceReleased -= InteractionManager_InteractionSourceReleased;
     }
 
     private void UpdateCollider()
@@ -132,32 +167,5 @@ public class ReadyGestureDetect : MonoBehaviour {
         //    Destroy(myLine.transform.Find("Collider").gameObject);
         //}
         BoxCollider col = myLine.AddComponent<BoxCollider>();
-    }
-
-    private void InteractionManager_InteractionSourcePressed(InteractionSourcePressedEventArgs obj)
-    {
-        //myLine.transform.position = positionHand;
-       
-        //vingers in pressed state
-        Debug.Log("Source pressed");
-    }
-
-    private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs obj)
-    {
-        //vinger is aanwezig in het scherm
-        Debug.Log("source detected");
-    }
-
-    private void InteractionManager_InteractionSourceReleased(InteractionSourceReleasedEventArgs obj)
-    {
-        //wanneer je vinger terug loslaat van pinch
-        myLine.transform.position = endPos;
-        Debug.Log("source released");
-    }
-
-    private void OnDestroy()
-    {
-        InteractionManager.InteractionSourcePressed -= InteractionManager_InteractionSourcePressed;
-        InteractionManager.InteractionSourceUpdated -= InteractionManager_InteractionSourceUpdated;
     }
 }

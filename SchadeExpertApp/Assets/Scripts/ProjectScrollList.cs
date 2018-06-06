@@ -19,11 +19,14 @@ public class ProjectScrollList : MonoBehaviour {
 
     public Transform contentPanel;
     public Transform projectPanel;
-    public Transform adjustPanel;
+    public Transform addPanel;
     public Transform deletePanel;
+    public GameObject headerPanel;
 
     public SimpleObjectPool projectNameButtonObjectPool;
     public SimpleObjectPool actionButtonObjectPool;
+
+    public GameObject emptyListLabel;
 
 
     // Use this for initialization
@@ -46,16 +49,30 @@ public class ProjectScrollList : MonoBehaviour {
 #if NETFX_CORE
     private async Task AddProjectsToScreen()
     {
+        headerPanel.SetActive(false);
+
         projectList = await GetAllProjectsAsync();
-        var index = 0;
-        foreach (StorageFolder project in projectList){
-            AddButtonFromObjectpoolToPanel(projectNameButtonObjectPool, projectPanel, project.Name, ButtonTypes.Info, index);
+        if(projectList.Count == 0)
+        {
+            Debug.Log("emptyListLabel");
+            emptyListLabel.SetActive(true);
+            emptyListLabel.GetComponent<TextMesh>().text = "Geen projecten aanwezig";
+        }
+        else{
+            Debug.Log("else");
 
-            AddButtonFromObjectpoolToPanel(actionButtonObjectPool, adjustPanel, "A", ButtonTypes.Adjust, index);
+            emptyListLabel.SetActive(false);
 
-            AddButtonFromObjectpoolToPanel(actionButtonObjectPool, deletePanel, "D", ButtonTypes.DeleteProject, index);
-            index++;
-        }  
+            var index = 0;
+            foreach (StorageFolder project in projectList){
+                AddButtonFromObjectpoolToPanel(projectNameButtonObjectPool, projectPanel, project.Name, ButtonTypes.Info, index);
+
+                AddButtonFromObjectpoolToPanel(actionButtonObjectPool, addPanel, "A", ButtonTypes.Add, index);
+
+                AddButtonFromObjectpoolToPanel(actionButtonObjectPool, deletePanel, "D", ButtonTypes.DeleteProject, index);
+                index++;
+            }
+        }        
     
         SetHeightScrollList(projectList.Count);
     }
@@ -65,7 +82,7 @@ public class ProjectScrollList : MonoBehaviour {
         return new List<StorageFolder>(await FolderManager.GetAllProjectFolders());
     }
 #endif
-    
+
     public void SetCurrentClickedProject(String clickedProjectName)
     {
 #if NETFX_CORE
@@ -86,17 +103,25 @@ public class ProjectScrollList : MonoBehaviour {
 #if NETFX_CORE
     public async Task AddFilesFromClickedProject()
     {
+        headerPanel.SetActive(true);
         currentProjectFiles = await GetAllFilesFromCurrentClickedProjectAsync();
-        var index = 0;
-        foreach (StorageFile file in currentProjectFiles)
+        if(currentProjectFiles.Count == 0)
         {
-            AddButtonFromObjectpoolToPanel(projectNameButtonObjectPool, projectPanel, file.Name, ButtonTypes.Info, index);
+            emptyListLabel.SetActive(true);
+            emptyListLabel.GetComponent<TextMesh>().text = "Geen files aanwezig";
+        }
+        else{
+            emptyListLabel.SetActive(false);
 
-            //AddButtonFromObjectpoolToPanel(actionButtonObjectPool, adjustPanel, file.FileType, ButtonTypes.Info);
+            var index = 0;
+            foreach (StorageFile file in currentProjectFiles)
+            {
+                AddButtonFromObjectpoolToPanel(projectNameButtonObjectPool, projectPanel, file.Name, ButtonTypes.Info, index);
 
-            AddButtonFromObjectpoolToPanel(actionButtonObjectPool, deletePanel, "D", ButtonTypes.DeleteFile, index);
+                AddButtonFromObjectpoolToPanel(actionButtonObjectPool, deletePanel, "D", ButtonTypes.DeleteFile, index);
 
-            index++;
+                index++;
+            }
         }
         SetHeightScrollList(currentProjectFiles.Count);
     }
@@ -126,7 +151,7 @@ public class ProjectScrollList : MonoBehaviour {
     public void RemoveItemsFromScreen()
     {
         RemoveItemsFromPanel(projectNameButtonObjectPool, projectPanel);
-        RemoveItemsFromPanel(actionButtonObjectPool, adjustPanel);
+        RemoveItemsFromPanel(actionButtonObjectPool, addPanel);
         RemoveItemsFromPanel(actionButtonObjectPool, deletePanel);
     }
 
@@ -176,7 +201,7 @@ public class ProjectScrollList : MonoBehaviour {
 
             AddButtonFromObjectpoolToPanel(projectNameButtonObjectPool, projectPanel, project, ButtonTypes.Info, 0);
 
-            AddButtonFromObjectpoolToPanel(actionButtonObjectPool, adjustPanel, "A", ButtonTypes.Adjust, 0);
+            AddButtonFromObjectpoolToPanel(actionButtonObjectPool, addPanel, "A", ButtonTypes.Add, 0);
 
             AddButtonFromObjectpoolToPanel(actionButtonObjectPool, deletePanel, "D", ButtonTypes.DeleteProject, 0);
 
@@ -188,7 +213,7 @@ public class ProjectScrollList : MonoBehaviour {
     private void SetHeightScrollList(int listItemsCount)
     {
         GameObject newButton = projectNameButtonObjectPool.GetObject();        
-        contentPanel.GetComponent<LayoutElement>().minHeight = newButton.GetComponent<RectTransform>().sizeDelta.y * listItemsCount;
+        contentPanel.GetComponent<LayoutElement>().minHeight = (newButton.GetComponent<RectTransform>().sizeDelta.y * listItemsCount) + 30;
         projectNameButtonObjectPool.ReturnObject(newButton);
     }
 }

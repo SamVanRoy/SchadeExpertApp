@@ -60,10 +60,16 @@ public class FolderManager : MonoBehaviour {
     {
         Debug.Log("SetCurrentProjectFolder: " + currentProjectFolderIndex);
 #if NETFX_CORE       
-        currentProjectFolder = ProjectScrollList.projectList[currentProjectFolderIndex];;
+        currentProjectFolder = ProjectScrollList.projectList[currentProjectFolderIndex];
 #endif
     }
 
+#if NETFX_CORE       
+    public static void SetCurrentProjectFolder(StorageFolder projectFolder)
+    {
+        currentProjectFolder = projectFolder;
+    }
+#endif
 
 #if NETFX_CORE
     public async void MakeNewProjectFolder()

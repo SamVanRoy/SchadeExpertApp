@@ -227,10 +227,15 @@ namespace HoloToolkit.Unity.UX
             switch (obj.name)
             {
                 case "ChangeColor":
-                    GameObject colorPickerScreen = Resources.Load("Prefabs/ColorPickerCanvas") as GameObject;
-                    Vector3 position = new Vector3(transform.position.x, this.transform.Find("ButtonParent/BackgroundBar").GetComponent<MeshRenderer>().bounds.extents.y, transform.position.z);
-                    colorPickerScreen = Instantiate(colorPickerScreen, position, transform.rotation);
-                    colorPickerScreen.transform.Find("Picker").GetComponent<ColorPicker>().InitializeColorPicker(marker, colorPickerScreen);
+
+
+                    MainMenuCommands.colorPickerScreen.SetActive(true);
+                    //GameObject colorPickerScreen = Resources.Load("Prefabs/ColorPickerCanvas") as GameObject;
+                    //Vector3 position = new Vector3(transform.position.x, this.transform.Find("ButtonParent/BackgroundBar").GetComponent<MeshRenderer>().bounds.extents.y, transform.position.z);
+                    Vector3 position = ReadyGestureDetect.CalculatePositionWithDistanceInFrontOfCamera(1.5f);
+                    MainMenuCommands.colorPickerScreen.transform.position = position;
+                    //colorPickerScreen = Instantiate(colorPickerScreen, position, transform.rotation);
+                    MainMenuCommands.colorPickerScreen.transform.Find("Picker").GetComponent<ColorPicker>().InitializeColorPicker(marker);
                     break;
                 case "Remove":
                     // Destroy the target object, Bounding Box, Bounding Box Rig and App Bar

@@ -21,7 +21,6 @@ public class ColorPicker : MonoBehaviour, IFocusable, IInputClickHandler
 
     private bool gazing = false;
 
-    private GameObject colorPickerScreen;
     private GameObject objectToColor;
 
 
@@ -61,17 +60,24 @@ public class ColorPicker : MonoBehaviour, IFocusable, IInputClickHandler
     public void OnInputClicked(InputClickedEventData eventData)
     {
         UpdatePickedColor(OnPickedColor);
-        Destroy(EventSystem.current.currentSelectedGameObject.transform.parent.gameObject);
+        MainMenuCommands.colorPickerScreen.SetActive(false);
+        //Destroy(EventSystem.current.currentSelectedGameObject.transform.parent.gameObject);
     }
 
-    public void InitializeColorPicker(GameObject objectToColor, GameObject colorPickerScreen)
+    public void InitializeColorPicker(GameObject objectToColor)
     {
-        this.colorPickerScreen = colorPickerScreen;
         this.objectToColor = objectToColor;
     }
 
     public void ChangeColorObject(Color color)
     {
-        objectToColor.GetComponent<Renderer>().material.color = color;
+        if(objectToColor != null)
+        {
+            objectToColor.GetComponent<Renderer>().material.color = color;
+        }
+        else
+        {
+            MainMenuCommands.colorPickerScreen.SetActive(false);
+        }
     }
 }

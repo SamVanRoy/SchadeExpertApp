@@ -11,10 +11,18 @@ public class MainMenuCommands : MonoBehaviour {
 
     private GameObject mainMenu;
 
+    public GameObject _colorPickerScreen;
+
+    public static GameObject colorPickerScreen;
+
+    private void Awake()
+    {
+        colorPickerScreen = _colorPickerScreen;
+    }
+
     public void MakeNewMarker()
     {
         marker = Instantiate(markerPrefab, transform.position, markerPrefab.transform.rotation);
-        //gameObject.GetComponent<TapToPlace>().IsBeingPlaced
     }
 
     public void ToggleVisibilityMainMenu(bool visibility)

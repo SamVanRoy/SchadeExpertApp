@@ -74,8 +74,7 @@ public class StartMenuCommands : MonoBehaviour {
     {
         if (isVisible)
         {
-            Vector3 positionHelpscreen = new Vector3(0, 0, 0);
-            helpScreen.transform.position = ReadyGestureDetect.CalculatePositionInFrontOfCamera(positionHelpscreen);
+            helpScreen.transform.position = ReadyGestureDetect.CalculatePositionWithDistanceInFrontOfCamera(2.0f);
         }
         helpScreen.SetActive(isVisible);
     }

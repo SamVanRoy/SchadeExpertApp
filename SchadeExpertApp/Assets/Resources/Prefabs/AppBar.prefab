@@ -37,6 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4300960871915998}
   - component: {fileID: 114025770209743652}
+  - component: {fileID: 114309896104699528}
   m_Layer: 0
   m_Name: AppBar
   m_TagString: Untagged
@@ -160,7 +161,7 @@ MonoBehaviour:
   SquareButtonPrefab: {fileID: 1210820392543280, guid: 40da8a1b3b26ba743b892d890b95a9f9,
     type: 2}
   UseRemove: 1
-  UseAdjust: 0
+  UseAdjust: 1
   UseHide: 1
   DisplayType: 0
   State: 0
@@ -184,5 +185,16 @@ MonoBehaviour:
   boundingBox: {fileID: 114030465538688920, guid: 865a8ded6c47efd4285f04f3aebe99e9,
     type: 2}
   marker: {fileID: 1614954143073554, guid: 3deeb98e1a50f494d89338731ada28d8, type: 2}
-  colorPicker: {fileID: 1764131892677300, guid: 5f899dc4387b0c4419c434a5fa2696ca,
+  colorPickerScreen: {fileID: 1633562090082692, guid: 5f899dc4387b0c4419c434a5fa2696ca,
     type: 2}
+--- !u!114 &114309896104699528
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1324588698542550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac8d5b128a1d8204fb76c86f47b75912, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

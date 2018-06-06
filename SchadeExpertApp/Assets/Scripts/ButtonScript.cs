@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using Windows.Storage;
 #endif
 
-public enum ButtonTypes { Adjust, DeleteProject, DeleteFile, Info };
+public enum ButtonTypes { Add, DeleteProject, DeleteFile, Info,  Back};
 
 public class ButtonScript : MonoBehaviour
 {
@@ -40,12 +40,9 @@ public class ButtonScript : MonoBehaviour
             case ButtonTypes.Info:
                 AddFilesFromProjectToScreen();
                 break;
-            case ButtonTypes.Adjust:
-                Debug.Log("Adjust");
+            case ButtonTypes.Add:
+                Debug.Log("Add");
                 OpenProject();
-//#if NETFX_CORE
-//                ShareProjectFilesAsync();
-//#endif
                 break;
             case ButtonTypes.DeleteProject:
                 ToggleVisibilityDeleteConfirmationScreen(true);
@@ -55,6 +52,10 @@ public class ButtonScript : MonoBehaviour
                 ToggleVisibilityDeleteConfirmationScreen(true);
                 lastClickedButtontype = ButtonTypes.DeleteFile;
                 break;
+            case ButtonTypes.Back:
+                projectList.AddProjectsToScreenWrapper();
+                break;
+
         }
         
     }
@@ -63,7 +64,17 @@ public class ButtonScript : MonoBehaviour
     {
         Debug.Log("OpenProject");
         startMenu.GetComponent<StartMenuCommands>().InitWorldNewProject(false);
-        FolderManager.SetCurrentProjectFolder(index);
+        if(index == -1)
+        {
+
+#if NETFX_CORE
+            FolderManager.SetCurrentProjectFolder(ProjectScrollList.currentClickedProject);
+#endif
+        }
+        else
+        {
+            FolderManager.SetCurrentProjectFolder(index);
+        }
     }
 
     private void AddFilesFromProjectToScreen()
@@ -72,25 +83,6 @@ public class ButtonScript : MonoBehaviour
         content.GetComponent<ProjectScrollList>().SetCurrentClickedProject(this.GetComponentInChildren<Text>().text);
         projectList.RemoveItemsFromScreen();
         projectList.AddFilesFromClickedProjectWrapper();
-    }
-
-
-    private async System.Threading.Tasks.Task ShareProjectFilesAsync()
-    {
-        Debug.Log("ShareProjectFilesAsync");
-#if NETFX_CORE
-        List<StorageFile> currentProjectFiles = await projectList.GetAllFilesFromCurrentClickedProjectAsync();
-        Debug.Log("currentProjectFiles");
-        List<String> currentProjectFilesPaths = new List<String>();
-        Debug.Log("currentProjectFilesPaths");
-        foreach (var file in currentProjectFiles)
-        {
-            Debug.Log("slet");
-            currentProjectFilesPaths.Add(file.Path);
-        }
-        //MailManager.feestje();
-#endif
-
     }
 
     public void ToggleVisibilityDeleteConfirmationScreen(bool visible)
