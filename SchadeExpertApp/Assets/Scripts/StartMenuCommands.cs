@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class StartMenuCommands : MonoBehaviour {
-    public GameObject speechManager;
     public GameObject photoManager;
     public GameObject videoManager;
     public GameObject mainMenu;
@@ -37,7 +36,6 @@ public class StartMenuCommands : MonoBehaviour {
     {
         startMenu.SetActive(isStartmenuActive);
         newProjectInformationScreen.SetActive(isStartmenuActive);
-        //speechManager.SetActive(!isStartmenuActive);
         photoManager.SetActive(!isStartmenuActive);
         videoManager.SetActive(!isStartmenuActive);
         mainMenu.SetActive(!isStartmenuActive);
@@ -57,7 +55,6 @@ public class StartMenuCommands : MonoBehaviour {
 
     public void HideStartMenu()
     {
-        //TODO:look if neccesary with gameobject
         if (startMenu == null)
         {
             startMenu = GameObject.Find("StartMenu");

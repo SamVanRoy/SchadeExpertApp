@@ -27,12 +27,9 @@ public class CaptureVideo : MonoBehaviour {
             return;
         }
 
-        Debug.Log("Is Recording? : " + isRecording);
-
         if (!isRecording)
         {
             m_VideoCapture.StopRecordingAsync(OnStoppedRecordingVideo);
-            Debug.Log("recording stopped!");
         }
     }
 
@@ -40,10 +37,7 @@ public class CaptureVideo : MonoBehaviour {
     {
 
         Resolution cameraResolution = VideoCapture.SupportedResolutions.OrderByDescending((res) => res.width * res.height).First();
-        Debug.Log("resolution: " + cameraResolution);
-
         float cameraFramerate = VideoCapture.GetSupportedFrameRatesForResolution(cameraResolution).OrderByDescending((fps) => fps).First();
-        Debug.Log("framerate: " + cameraFramerate);
 
         VideoCapture.CreateAsync(true, delegate (VideoCapture videoCapture)
         {
@@ -84,21 +78,15 @@ public class CaptureVideo : MonoBehaviour {
 
     void OnStartedVideoCaptureMode(VideoCapture.VideoCaptureResult result)
     {
-        Debug.Log("Started Video Capture Mode!");
         string timeStamp = Time.time.ToString().Replace(".", "").Replace(":", "");
         string filename = string.Format("TestVideo_{0}.mp4", timeStamp);
         string filepath = System.IO.Path.Combine(Application.persistentDataPath, filename);
         filepath = filepath.Replace("/", @"\");
 #if NETFX_CORE
         if(videoFolderPath != null){
-            Debug.Log("filepath1: " + filepath);
-            Debug.Log("videoFolderPath1: " + System.IO.Path.Combine(videoFolderPath, "Camera Roll", filename));
             m_VideoCapture.StartRecordingAsync(System.IO.Path.Combine(FolderManager.currentProjectFolder.Path, filename), OnStartedRecordingVideo);
-            //m_VideoCapture.StartRecordingAsync(System.IO.Path.Combine(videoFolderPath, "Camera Roll", filename), OnStartedRecordingVideo);
         }
         else{
-            Debug.Log("filepath2: " + filepath);
-             Debug.Log("videoFolderPath2: " + videoFolderPath);
             m_VideoCapture.StartRecordingAsync(filepath, OnStartedRecordingVideo);
         }
 #endif

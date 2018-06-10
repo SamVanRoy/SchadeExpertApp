@@ -54,7 +54,6 @@ public class CapturePhotoScript : MonoBehaviour {
             // Activate the camera
             photoCaptureObject.StartPhotoModeAsync(cameraParameters, delegate (PhotoCapture.PhotoCaptureResult result) {
                 // Take a picture
-                Debug.Log("now for real!");
                 photoCaptureObject.TakePhotoAsync(OnCapturedPhotoToMemory);
             });
         });
@@ -96,7 +95,6 @@ public class CapturePhotoScript : MonoBehaviour {
         Vector3 CameraPosition = Camera.main.transform.position + Camera.main.transform.forward * distance;
 
         quad.transform.parent = this.transform;
-        //this.transform.position = Camera.main.transform.position;
         quad.transform.position = CameraPosition;
 
         foreach (Transform child in transform)
@@ -119,8 +117,6 @@ public class CapturePhotoScript : MonoBehaviour {
 
     public void OnCapturedPhotoToDisk()
     {
-        //var cameraRollFolder = Windows.Storage.KnownFolders.CameraRoll.Path; 
-
 #if NETFX_CORE
         try 
         {
@@ -182,7 +178,6 @@ public class CapturePhotoScript : MonoBehaviour {
         var bytes = texture.EncodeToPNG();
         string file = string.Format(@"Image_{0:yyyy-MM-dd_hh-mm-ss-tt}.jpg", DateTime.Now);
         currentImagePath = System.IO.Path.Combine(Application.persistentDataPath, file);
-        //var path = System.IO.Path.Combine(Application.persistentDataPath, fileName + ".png");
         System.IO.File.WriteAllBytes(currentImagePath, bytes);
     }
 }

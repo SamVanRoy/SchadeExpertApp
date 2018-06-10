@@ -61,7 +61,6 @@ public class ColorPicker : MonoBehaviour, IFocusable, IInputClickHandler
     {
         UpdatePickedColor(OnPickedColor);
         MainMenuCommands.colorPickerScreen.SetActive(false);
-        //Destroy(EventSystem.current.currentSelectedGameObject.transform.parent.gameObject);
     }
 
     public void InitializeColorPicker(GameObject objectToColor)

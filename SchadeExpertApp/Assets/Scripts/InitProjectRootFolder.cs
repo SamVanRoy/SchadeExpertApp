@@ -17,20 +17,5 @@ public class InitProjectRootFolder : MonoBehaviour {
         StorageFolder appFolder = ApplicationData.Current.LocalFolder;
         appFolder.CreateFolderAsync(FolderManager.rootFolderName, CreationCollisionOption.FailIfExists);      
 #endif
-
     }
-
-    /*
-     * #if NETFX_CORE
-        if (Directory.Exists(Path.Combine(ApplicationData.Current.LocalFolder.Path, "projects"))
-        {
-            Debug.Log("geldig pad");
-        }
-        else
-        {
-            Directory.CreateDirectory(Path.Combine(ApplicationData.Current.LocalFolder.Path, "projects"));
-            Debug.Log("Geen geldig pad");
-        }
-#endif
-        **/
 }

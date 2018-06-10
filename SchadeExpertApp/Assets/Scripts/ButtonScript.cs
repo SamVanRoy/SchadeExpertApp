@@ -23,11 +23,8 @@ public class ButtonScript : MonoBehaviour
 
     public static ButtonTypes lastClickedButtontype;
 
-
-
     // Use this for initialization
     void Start () {
-        Debug.Log(buttonComponent.name);
         buttonComponent.onClick.AddListener(HandleClick);
         projectList = content.GetComponent<ProjectScrollList>();
     }
@@ -41,7 +38,6 @@ public class ButtonScript : MonoBehaviour
                 AddFilesFromProjectToScreen();
                 break;
             case ButtonTypes.Add:
-                Debug.Log("Add");
                 OpenProject();
                 break;
             case ButtonTypes.DeleteProject:
@@ -62,11 +58,9 @@ public class ButtonScript : MonoBehaviour
 
     private void OpenProject()
     {
-        Debug.Log("OpenProject");
         startMenu.GetComponent<StartMenuCommands>().InitWorldNewProject(false);
         if(index == -1)
         {
-
 #if NETFX_CORE
             FolderManager.SetCurrentProjectFolder(ProjectScrollList.currentClickedProject);
 #endif
@@ -79,7 +73,6 @@ public class ButtonScript : MonoBehaviour
 
     private void AddFilesFromProjectToScreen()
     {
-        Debug.Log("naam project: " + this.GetComponentInChildren<Text>().text);
         content.GetComponent<ProjectScrollList>().SetCurrentClickedProject(this.GetComponentInChildren<Text>().text);
         projectList.RemoveItemsFromScreen();
         projectList.AddFilesFromClickedProjectWrapper();
@@ -92,7 +85,6 @@ public class ButtonScript : MonoBehaviour
 
     public void DeleteAppropriateButtonType()
     {
-        Debug.Log("lastClickedButtontype: " + lastClickedButtontype);
         switch (lastClickedButtontype)
         {
             case ButtonTypes.DeleteProject:
@@ -107,19 +99,14 @@ public class ButtonScript : MonoBehaviour
     public void DeleteThisProject()
     {
         ToggleVisibilityDeleteConfirmationScreen(false);
-        Debug.Log("DeleteThisProject");
-        Debug.Log("Sampie2: " + projectList.name);
 
 #if NETFX_CORE
-        Debug.Log("DeleteThisProject2");
         projectList.DeleteProjectAsync(index);
-        Debug.Log("DeleteThisProject3");
 #endif
     }
 
     private void DeleteThisFileAsync()
     {
-        Debug.Log("DeleteThisFileAsync");
         ToggleVisibilityDeleteConfirmationScreen(false);
 #if NETFX_CORE
         projectList.DeleteFileFromProjectAsync(index);

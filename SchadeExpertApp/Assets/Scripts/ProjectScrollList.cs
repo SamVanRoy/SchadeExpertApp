@@ -15,8 +15,6 @@ public class ProjectScrollList : MonoBehaviour {
     public static StorageFolder currentClickedProject;
     public static List<StorageFile> currentProjectFiles;
 #endif
-    public List<String> projectList2;
-
     public Transform contentPanel;
     public Transform projectPanel;
     public Transform addPanel;
@@ -31,13 +29,10 @@ public class ProjectScrollList : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        //test();
     }
 
     public void AddProjectsToScreenWrapper()
     {
-        Debug.Log("AddProjectsToScreenWrapper");
-        //test();
 #if NETFX_CORE
         RemoveItemsFromScreen();
         AddProjectsToScreen();
@@ -54,13 +49,10 @@ public class ProjectScrollList : MonoBehaviour {
         projectList = await GetAllProjectsAsync();
         if(projectList.Count == 0)
         {
-            Debug.Log("emptyListLabel");
             emptyListLabel.SetActive(true);
             emptyListLabel.GetComponent<TextMesh>().text = "Geen projecten aanwezig";
         }
         else{
-            Debug.Log("else");
-
             emptyListLabel.SetActive(false);
 
             var index = 0;
@@ -73,7 +65,6 @@ public class ProjectScrollList : MonoBehaviour {
                 index++;
             }
         }        
-    
         SetHeightScrollList(projectList.Count);
     }
 
@@ -87,13 +78,11 @@ public class ProjectScrollList : MonoBehaviour {
     {
 #if NETFX_CORE
         currentClickedProject = projectList.Find(project => project.Name == clickedProjectName);
-        Debug.Log("current clicked project name:" + currentClickedProject.Name);
 #endif
     }
 
     public void AddFilesFromClickedProjectWrapper()
     {
-        Debug.Log("AddFilesFromClickedProjectWrapper");
 #if NETFX_CORE
         RemoveItemsFromScreen();
         AddFilesFromClickedProject();
@@ -128,9 +117,7 @@ public class ProjectScrollList : MonoBehaviour {
 
     public async Task<List<StorageFile>> GetAllFilesFromCurrentClickedProjectAsync()
     {
-        Debug.Log("GetAllFilesFromCurrentClickedProjectAsync");
         var tempList = await FolderManager.GetAllFilesFromProject(currentClickedProject);
-        Debug.Log("GetAllFilesFromCurrentClickedProjectAsync" + tempList);
         return new List<StorageFile>(tempList);
     }
 #endif
@@ -165,7 +152,6 @@ public class ProjectScrollList : MonoBehaviour {
 
     public void RemoveItemFromList(int indexToRemove)
     {
-        Debug.Log("index: " + indexToRemove);
 #if NETFX_CORE
         projectList.RemoveAt(indexToRemove);
 #endif
@@ -174,9 +160,7 @@ public class ProjectScrollList : MonoBehaviour {
 #if NETFX_CORE
     public async Task DeleteFileFromProjectAsync(int deleteButtonIndex)
     {
-        Debug.Log("DeleteFileFromProjectAsync");
         StorageFile fileToDelete = currentProjectFiles[deleteButtonIndex];
-        Debug.Log(fileToDelete.Name);
         await fileToDelete.DeleteAsync();
         RemoveItemFromList(deleteButtonIndex);
         AddFilesFromClickedProjectWrapper();
@@ -184,31 +168,12 @@ public class ProjectScrollList : MonoBehaviour {
 
     public async Task DeleteProjectAsync(int deleteButtonIndex)
     {
-        Debug.Log("DeleteProjectAsync");
         StorageFolder folderToDelete = projectList[deleteButtonIndex];
-        Debug.Log(folderToDelete.Name);
         await folderToDelete.DeleteAsync();
         RemoveItemFromList(deleteButtonIndex);
         AddProjectsToScreenWrapper();
     }
 #endif
-
-    public void test()
-    {
-        foreach (String project in projectList2)
-        {
-            Debug.Log("foreach addprojects: " + project);
-
-            AddButtonFromObjectpoolToPanel(projectNameButtonObjectPool, projectPanel, project, ButtonTypes.Info, 0);
-
-            AddButtonFromObjectpoolToPanel(actionButtonObjectPool, addPanel, "A", ButtonTypes.Add, 0);
-
-            AddButtonFromObjectpoolToPanel(actionButtonObjectPool, deletePanel, "D", ButtonTypes.DeleteProject, 0);
-
-        }
-        SetHeightScrollList(projectList2.Count);
-
-    }
 
     private void SetHeightScrollList(int listItemsCount)
     {

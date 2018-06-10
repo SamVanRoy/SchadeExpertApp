@@ -30,11 +30,6 @@ public class FolderManager : MonoBehaviour {
 #endif
     }
 
-    // Update is called once per frame
-    void Update () {
-		
-	}
-
 #if NETFX_CORE
     public async void GetProjectRootFolder()
     {
@@ -46,7 +41,6 @@ public class FolderManager : MonoBehaviour {
     public void GetProjectNameFromInputField(GameObject projectNameInputField)
     {
         projectName = projectNameInputField.GetComponent<InputField>().text;
-        Debug.Log("projectname: " + projectName);     
     }
 
     public void MakeNewProjectFolderWrapper()
@@ -58,7 +52,6 @@ public class FolderManager : MonoBehaviour {
 
     public static void SetCurrentProjectFolder(int currentProjectFolderIndex)
     {
-        Debug.Log("SetCurrentProjectFolder: " + currentProjectFolderIndex);
 #if NETFX_CORE       
         currentProjectFolder = ProjectScrollList.projectList[currentProjectFolderIndex];
 #endif
@@ -76,8 +69,6 @@ public class FolderManager : MonoBehaviour {
     {
         if(projectName != null || projectName.Length > 0) {
             currentProjectFolder = await projectRootFolder.CreateFolderAsync(projectName, CreationCollisionOption.FailIfExists);
-            Debug.Log("projectRootFolder: " + projectRootFolder.Name);
-            Debug.Log("nieuwe folder: " + currentProjectFolder);
         }
     }
 #endif
@@ -87,10 +78,7 @@ public class FolderManager : MonoBehaviour {
     {
 
         if(Directory.Exists(projectRootFolder.Path)){
-            Debug.Log("getAllProjectFolders");
-            Debug.Log("projectRootFolder: " + projectRootFolder.Name);
             return projectRootFolder.GetFoldersAsync();
-            
         }
         else
         {
@@ -103,14 +91,12 @@ public class FolderManager : MonoBehaviour {
 #if NETFX_CORE
     public static IAsyncOperation<IReadOnlyList<StorageFile>> GetAllFilesFromProject(StorageFolder projectFolder)
     {
-        Debug.Log("GetAllFilesFromProject");
         return projectFolder.GetFilesAsync();
     }
 #endif
 
     public static async void CopyRecordingFileToProject(object sender, RecordingFileEventArgs e)
     {
-        Debug.Log("ontvang event");
 #if NETFX_CORE
         StorageFile recordedVoiceFile = await StorageFile.GetFileFromPathAsync(e.RecordingFilePath);
         recordedVoiceFile.CopyAsync(currentProjectFolder, GenerateFileNameWithPrefix("VoiceRecording", "wav"));
